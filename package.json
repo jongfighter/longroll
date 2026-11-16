@@ -1,0 +1,56 @@
+{
+  "name": "longroll",
+  "version": "1.0.0",
+  "description": "Long image (webtoon) viewer",
+  "main": "src/main.js",
+  "author": "jongfighter",
+  "license": "0BSD",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jongfighter/longroll.git"
+  },
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "test": "node test/run-e2e.js",
+    "dist": "electron-builder --win nsis"
+  },
+  "devDependencies": {
+    "electron": "^45.2.3",
+    "electron-builder": "^26.18.0",
+    "playwright": "^1.64.1"
+  },
+  "build": {
+    "appId": "com.longroll.viewer",
+    "productName": "Longroll",
+    "publish": null,
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "src/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "fileAssociations": [
+        { "ext": "jpg", "name": "JPEG Image", "role": "Viewer" },
+        { "ext": "jpeg", "name": "JPEG Image", "role": "Viewer" },
+        { "ext": "png", "name": "PNG Image", "role": "Viewer" },
+        { "ext": "webp", "name": "WebP Image", "role": "Viewer" },
+        { "ext": "gif", "name": "GIF Image", "role": "Viewer" },
+        { "ext": "bmp", "name": "BMP Image", "role": "Viewer" },
+        { "ext": "avif", "name": "AVIF Image", "role": "Viewer" }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "artifactName": "Longroll-Setup-${version}.${ext}",
+      "packElevateHelper": false
+    }
+  }
+}

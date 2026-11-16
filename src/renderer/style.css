@@ -1,0 +1,222 @@
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: #121212;
+  color: #ddd;
+  font: 13px "Segoe UI", "Malgun Gothic", system-ui, sans-serif;
+  user-select: none;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+#topbar {
+  flex: none;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 14px;
+  background: #1e1e1e;
+  border-bottom: 1px solid #2c2c2c;
+  white-space: nowrap;
+}
+
+#comic {
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 34%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #8f8f8f;
+}
+
+#comic:not(:empty)::after {
+  content: "›";
+  margin-left: 14px;
+  color: #5a5a5a;
+}
+
+#name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #f2f2f2;
+}
+
+#index, #page, #dims, #zoom {
+  flex: none;
+  color: #9a9a9a;
+  font-variant-numeric: tabular-nums;
+}
+
+#index { color: #cfcfcf; }
+
+#zoom { min-width: 84px; text-align: right; color: #cfcfcf; }
+
+#view {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  timeline-scope: --vscroll, --hscroll;
+}
+
+#scroller {
+  position: absolute;
+  inset: 0;
+  overflow: auto;
+  scrollbar-width: none;
+  scroll-timeline: --vscroll y, --hscroll x;
+  overflow-anchor: none;
+  cursor: grab;
+  outline: none;
+}
+
+#scroller::-webkit-scrollbar { display: none; }
+
+#scroller.panning { cursor: grabbing; }
+
+#strip {
+  position: relative;
+  margin: 0 auto;
+}
+
+.page {
+  position: relative;
+  background: #181818;
+}
+
+.page img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: none;
+}
+
+.page.unsized { min-height: 40vh; }
+
+.page.broken { min-height: 64px; }
+
+.page.broken img { visibility: hidden; }
+
+.page.broken::after {
+  content: attr(data-label);
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  text-align: center;
+  white-space: pre-line;
+  color: #8a8a8a;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.sbar {
+  position: absolute;
+  z-index: 5;
+  touch-action: none;
+  --len: 40px;
+  --travel: 0px;
+}
+
+.sbar[hidden] { display: none; }
+
+#vbar { top: 0; right: 0; bottom: 0; width: 16px; }
+#vbar.corner { bottom: 16px; }
+#hbar { left: 0; right: 0; bottom: 0; height: 16px; }
+#hbar.corner { right: 16px; }
+
+.sthumb {
+  position: absolute;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.24);
+}
+
+#vbar .sthumb {
+  top: 2px;
+  right: 3px;
+  width: 6px;
+  height: var(--len);
+  transition: background-color 0.12s, width 0.12s;
+}
+
+#hbar .sthumb {
+  left: 2px;
+  bottom: 3px;
+  height: 6px;
+  width: var(--len);
+  transition: background-color 0.12s, height 0.12s;
+}
+
+.sbar.active .sthumb { background: rgba(255, 255, 255, 0.4); }
+.sbar:hover .sthumb { background: rgba(255, 255, 255, 0.55); }
+.sbar.dragging .sthumb { background: rgba(255, 255, 255, 0.72); }
+#vbar:hover .sthumb, #vbar.dragging .sthumb { width: 10px; }
+#hbar:hover .sthumb, #hbar.dragging .sthumb { height: 10px; }
+
+@keyframes sbar-y { to { transform: translate3d(0, var(--travel), 0); } }
+@keyframes sbar-x { to { transform: translate3d(var(--travel), 0, 0); } }
+
+#vbar .sthumb { animation: sbar-y linear both; animation-timeline: --vscroll; }
+#hbar .sthumb { animation: sbar-x linear both; animation-timeline: --hscroll; }
+
+#view.js-sync .sthumb { animation: none; }
+
+#message {
+  position: fixed;
+  top: 34px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  text-align: center;
+  color: #8a8a8a;
+  font-size: 15px;
+  line-height: 1.7;
+  white-space: pre-line;
+  pointer-events: none;
+}
+
+#message[hidden] { display: none; }
+
+#toast {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
+  padding: 8px 18px;
+  border-radius: 18px;
+  background: rgba(40, 40, 40, 0.92);
+  border: 1px solid #3a3a3a;
+  color: #e6e6e6;
+  pointer-events: none;
+}
+
+#toast[hidden] { display: none; }
+
+#dropmask {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(20, 20, 20, 0.82);
+  border: 3px dashed #6aa9ff;
+  color: #cfe3ff;
+  font-size: 20px;
+  pointer-events: none;
+}
+
+#dropmask[hidden] { display: none; }

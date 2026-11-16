@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src file: data:; style-src 'self'; script-src 'self'">
+  <title>Longroll</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header id="topbar">
+    <span id="comic"></span>
+    <span id="name"></span>
+    <span id="index"></span>
+    <span id="page"></span>
+    <span id="dims"></span>
+    <span id="zoom"></span>
+  </header>
+  <div id="view">
+    <main id="scroller" tabindex="-1">
+      <div id="strip"></div>
+    </main>
+    <div id="vbar" class="sbar" hidden><div class="sthumb"></div></div>
+    <div id="hbar" class="sbar" hidden><div class="sthumb"></div></div>
+  </div>
+  <div id="message" hidden></div>
+  <div id="toast" hidden></div>
+  <div id="dropmask" hidden>이미지 또는 폴더를 놓으세요</div>
+  <script src="renderer.js"></script>
+</body>
+</html>
